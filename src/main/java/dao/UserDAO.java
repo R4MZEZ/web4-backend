@@ -15,7 +15,7 @@ public class UserDAO {
 
 
   public int add(String username, String password) {
-    User user = new User(username, password, getMaxId());
+    User user = new User(username, password, getMaxId(), 1);
     Session session = HibernateFactory.getSessionFactory().openSession();
     Transaction tx1 = session.beginTransaction();
     Query query = session.createQuery("from model.User where username = :username");
@@ -71,5 +71,21 @@ public class UserDAO {
   }
 
 
+  public int getRole(int user_id) {
+    Session session = HibernateFactory.getSessionFactory().openSession();
+
+    Query query = session.createQuery("from User where id = :user_id");
+    query.setParameter("user_id", user_id);
+
+    return ((User)query.getSingleResult()).getRole();
+  }
+
+  public List<User> findAll() throws NullPointerException {
+    Session session = HibernateFactory.getSessionFactory().openSession();
+
+    Query query = session.createQuery("from User");
+
+    return (List<User>) query.list();
+  }
 }
 

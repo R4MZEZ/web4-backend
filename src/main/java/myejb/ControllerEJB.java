@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.validation.constraints.Null;
 import model.Point;
+import model.User;
 
 @Stateless
 public class ControllerEJB {
@@ -26,5 +27,13 @@ public class ControllerEJB {
 
   public List<Point> findAll(int user_id) {
     return pointDAO.findAll(user_id);
+  }
+
+  public int getRole(int user_id){
+    return userDAO.getRole(user_id);
+  }
+
+  public List<User> findAllUsers() {
+    return userDAO.findAll();
   }
 }

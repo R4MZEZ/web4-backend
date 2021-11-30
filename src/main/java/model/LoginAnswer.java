@@ -56,6 +56,31 @@ public class LoginAnswer {
     this.errCode = errCode;
   }
 
+  //for Moderator
+  public LoginAnswer(String username) {
+    UserDAO userDAO = new UserDAO();
+
+    SecretKeyEJB secretKeyEJB = new SecretKeyEJB();
+    Key secretKey;
+    try {
+      secretKey = secretKeyEJB.getSecretKey();
+    }catch (IOException e){
+      secretKey = null;
+    }
+    int returnedId;
+
+    returnedId = userDAO.getUser(username).getId();
+    if (returnedId == -1) {
+      errCode = 2;
+    } else {
+      this.id = returnedId;
+      this.jwt = Jwts.builder().setSubject(username).signWith(secretKey).compact();
+      this.username = username;
+    }
+
+
+  }
+
 
   public String getJwt() {
     return jwt;
